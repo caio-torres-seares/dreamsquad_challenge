@@ -12,5 +12,11 @@ router = APIRouter(
 
 @router.post("/", response_model=ChatResponse)
 async def chat_endpoint(payload: ChatRequest):
+    try:
         response = process_chat_message(payload.message)
         return ChatResponse(response=response)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erro ao processar mensagem: {str(e)}"
+        )

@@ -1,8 +1,7 @@
 from strands import Agent
 from app.core.model_factory import build_model
 from strands_tools import calculator
-
-model = build_model()
+from strands.agent.conversation_manager import SummarizingConversationManager
 
 system_prompt = """
 Você é um assistente útil.
@@ -21,13 +20,17 @@ Quando não souber, responda normalmente.
 """
 _agent_instance: Agent | None = None
 
+# Gerenciador de conversa para manter contexto e melhorar respostas
+conversation_manager = SummarizingConversationManager()
+
 def get_agent() -> Agent:
     global _agent_instance
     if _agent_instance is None:   
         _agent_instance = Agent(
-            model=model,
+            model=build_model(),
             tools=[calculator],
             system_prompt=system_prompt,
+            conversation_manager=conversation_manager
         )
     return _agent_instance
 

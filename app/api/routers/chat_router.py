@@ -1,8 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status, Request
 from app.models.chat_request import ChatRequest
 from app.models.chat_response import ChatResponse
 from app.services.chat_service import process_chat_message
-from fastapi import HTTPException, status
+from .limiter import limiter
 
 
 router = APIRouter(
@@ -11,7 +11,8 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=ChatResponse)
-async def chat_endpoint(payload: ChatRequest):
+@limiter.limit("1/second")
+async def chat_endpoint(request: Request, payload: ChatRequest):
     try:
         response = process_chat_message(payload.message)
         return ChatResponse(response=response)

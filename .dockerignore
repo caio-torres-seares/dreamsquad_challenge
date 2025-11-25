@@ -1,0 +1,15 @@
+.venv/
+venv/
+ENV/
+env/
+
+.git/
+.gitignore
+
+__pycache__/
+*.pyc
+*.log
+
+Dockerfile
+
+.vscode/

@@ -13,3 +13,7 @@ __pycache__/
 Dockerfile
 
 .vscode/
+
+.pytest_cache/
+tests/
+pytest.ini
